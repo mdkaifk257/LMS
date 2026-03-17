@@ -99,7 +99,7 @@ export default function CourseDetails({ params }: { params: Promise<{ subjectId:
             <p className="text-gray-600 dark:text-gray-300 mb-6 text-lg">{subject.description}</p>
             
             <div className="mb-6">
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">₹{subject.price}</span>
+              <span className="text-2xl font-bold text-gray-900 dark:text-white">{subject.price}</span>
             </div>
 
             {isEnrolled ? (

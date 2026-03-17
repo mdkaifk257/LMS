@@ -34,7 +34,7 @@ export default function CoursesCatalog() {
               <p className="mb-4 font-normal text-gray-700 dark:text-gray-400 line-clamp-3 flex-grow">{subject.description}</p>
               
               <div className="mb-4 flex items-center justify-between">
-                <span className="text-lg font-bold text-gray-900 dark:text-white">₹{subject.price}</span>
+                <span className="text-lg font-bold text-gray-900 dark:text-white">{subject.price}</span>
                 {subject.price === 0 && <span className="text-xs font-medium px-2 py-0.5 rounded bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">FREE</span>}
               </div>
               

@@ -120,7 +120,7 @@ export default function AIAssistant() {
               }`}>
                 {msg.content}
                 <div className={`flex items-center mt-3 opacity-40 text-[10px] font-bold uppercase tracking-widest ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  {msg.role === 'user' ? 'User Identity Validated' : 'AI Core Processing Complete'} • {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  {msg.role === 'user' ? 'User Identity Validated' : 'AI Core Processing Complete'}  {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </div>
               </div>
             </div>

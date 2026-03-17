@@ -49,10 +49,10 @@ export default function Dashboard() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-12">
         {[
-          { label: 'Enrolled Courses', value: enrollments.length, icon: '📚', color: 'bg-blue-500' },
-          { label: 'Total Lessons', value: totalLessons, icon: '🎥', color: 'bg-purple-500' },
-          { label: 'Completed', value: completedLessons, icon: '🏆', color: 'bg-green-500' },
-          { label: 'Success Rate', value: `${totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0}%`, icon: '📈', color: 'bg-orange-500' },
+          { label: 'Enrolled Courses', value: enrollments.length, icon: '', color: 'bg-blue-500' },
+          { label: 'Total Lessons', value: totalLessons, icon: '', color: 'bg-purple-500' },
+          { label: 'Completed', value: completedLessons, icon: '', color: 'bg-green-500' },
+          { label: 'Success Rate', value: `${totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0}%`, icon: '', color: 'bg-orange-500' },
         ].map((stat, i) => (
           <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 flex items-center space-x-4 transition hover:shadow-2xl">
             <div className={`${stat.color} p-3 rounded-xl text-2xl`}>{stat.icon}</div>
@@ -66,12 +66,12 @@ export default function Dashboard() {
       
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-6 flex items-center">
-          <span className="mr-2">🔥</span> Keep Learning
+          <span className="mr-2"></span> Keep Learning
         </h2>
         
         {enrollments.length === 0 ? (
           <div className="bg-white dark:bg-gray-800 p-12 rounded-3xl shadow-lg text-center border-2 border-dashed border-gray-200 dark:border-gray-700">
-            <div className="text-6xl mb-4">🚀</div>
+            <div className="text-6xl mb-4"></div>
             <p className="text-xl text-gray-500 dark:text-gray-400 mb-6 font-medium">Your learning journey starts here!</p>
             <Link href="/courses" className="text-white bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-full font-bold shadow-lg transition">
               Explore Courses

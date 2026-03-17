@@ -35,7 +35,7 @@ export default function PaymentModal({ isOpen, onClose, onConfirm, courseTitle, 
           <div className="text-center mb-8">
             <p className="text-gray-500 dark:text-gray-400 mb-1">Paying for</p>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">{courseTitle}</h4>
-            <div className="text-4xl font-extrabold text-blue-600 dark:text-blue-500">₹{price}</div>
+            <div className="text-4xl font-extrabold text-blue-600 dark:text-blue-500">{price}</div>
           </div>
 
           <div className="bg-gray-50 dark:bg-gray-900/50 rounded-xl p-6 mb-8 border border-gray-100 dark:border-gray-700">
@@ -70,7 +70,7 @@ export default function PaymentModal({ isOpen, onClose, onConfirm, courseTitle, 
               I have completed the payment
             </button>
             <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-              By clicking "Confirm", you verify that you have successfully sent the payment of ₹{price} to the specified UPI ID.
+              By clicking "Confirm", you verify that you have successfully sent the payment of {price} to the specified UPI ID.
             </p>
           </div>
         </div>
