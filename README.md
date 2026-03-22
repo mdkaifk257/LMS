@@ -2,11 +2,27 @@
 
 A full-stack Learning Management System built with Next.js, Node.js (Express), and MySQL.
 
+## 🚀 Quick Start (Monorepo)
+
+The easiest way to get started is to use the root-level scripts:
+
+1. **Install everything**:
+   ```bash
+   npm run install:all
+   ```
+
+2. **Start both backend & frontend**:
+   ```bash
+   npm run dev
+   ```
+   - Frontend: [http://localhost:3000](http://localhost:3000)
+   - Backend: [http://localhost:5000](http://localhost:5000)
+
 ## Prerequisites
 - Node.js > 18
 - MySQL Server
 
-## Backend Setup
+## Backend Setup (Manual)
 
 1. cd `backend`
 2. Run `npm install`
@@ -14,7 +30,7 @@ A full-stack Learning Management System built with Next.js, Node.js (Express), a
 4. Execute `schema.sql` and `seed.sql` in your MySQL database
 5. Start server: `npm run dev`
 
-## Frontend Setup
+## Frontend Setup (Manual)
 
 1. cd `frontend`
 2. Run `npm install`
