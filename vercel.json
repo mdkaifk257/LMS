@@ -1,6 +1,8 @@
 {
+  "version": 2,
   "outputDirectory": "frontend/.next",
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/backend/$1" },
     { "source": "/(.*)", "destination": "/frontend/$1" }
   ]
 }
