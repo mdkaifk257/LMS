@@ -21,7 +21,11 @@ const register = async (req, res) => {
 
     res.status(201).json({ message: 'User registered successfully', userId: result.insertId });
   } catch (error) {
-    console.error('Registration error:', error);
+    console.error('--- REGISTRATION ERROR ---');
+    console.error('Error Code:', error.code);
+    console.error('Error Message:', error.message);
+    console.error('Stack:', error.stack);
+    console.error('---------------------------');
     res.status(500).json({ message: 'Registration failed: ' + error.message });
   }
 };

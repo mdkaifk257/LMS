@@ -1,5 +1,6 @@
 const OpenAI = require('openai');
 const axios = require('axios');
+const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { pool } = require('../config/db');
 require('dotenv').config();
 
@@ -56,9 +57,25 @@ exports.askAI = async (req, res) => {
 
     // 2. Call AI Service
     console.log(`AI Request for user ${userId} (${userName}):`, message);
-    console.log('Using System Prompt context:', progressRows.length, 'subjects found');
 
-    if (apiKey.startsWith('hf_')) {
+    if (apiKey.startsWith('AIza')) {
+      // Use Google Gemini API
+      console.log('Calling Google Gemini API...');
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      const result = await model.generateContent({
+        contents: [{ role: "user", parts: [{ text: systemPrompt + "\n\nUser Question: " + message }] }],
+      });
+      
+      const aiResponse = result.response.text();
+      console.log('Gemini Response Success');
+      return res.json({ 
+        response: aiResponse,
+        model: 'Gemini-1.5-Flash' 
+      });
+    } else if (apiKey.startsWith('hf_')) {
+      // ... existing HF logic ...
       // Use Hugging Face Inference Providers (OpenAI-compatible router)
       console.log('Calling Hugging Face Router...');
       const response = await axios.post(
@@ -76,7 +93,10 @@ exports.askAI = async (req, res) => {
       
       const aiResponse = response.data.choices[0].message.content;
       console.log('Hugging Face Response Success');
-      return res.json({ response: aiResponse });
+      return res.json({ 
+        response: aiResponse,
+        model: 'Llama-3.1-8B' 
+      });
     } else {
       // Use OpenAI API
       console.log('Calling OpenAI API (gpt-4o-mini)...');
@@ -91,22 +111,36 @@ exports.askAI = async (req, res) => {
       });
 
       console.log('OpenAI Response Success');
-      return res.json({ response: completion.choices[0].message.content });
+      return res.json({ 
+        response: completion.choices[0].message.content,
+        model: 'GPT-4o-Mini'
+      });
     }
   } catch (error) {
     console.error('--- AI CONTROLLER ERROR ---');
+    let errorMessage = 'Error communicating with AI service. Please check your API key and try again.';
+    
     if (error.response) {
       console.error('Status:', error.response.status);
       console.error('Data:', JSON.stringify(error.response.data, null, 2));
+      
+      // Specific handling for Hugging Face Router 403 errors
+      if (error.response.status === 403 && apiKey.startsWith('hf_')) {
+        errorMessage = 'Hugging Face Authentication Failed: Your token lacks "Inference Providers" permission. Please use a Fine-grained token with the correctly assigned permissions.';
+      } else if (error.response.data && error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
     } else if (error.status) {
       // OpenAI SDK v4+ uses error.status
       console.error('SDK Status:', error.status);
       console.error('SDK Message:', error.message);
+      if (error.status === 401) {
+        errorMessage = 'Invalid OpenAI API Key. Please check your .env file.';
+      }
     } else {
       console.error('Message:', error.message);
-      console.error('Stack:', error.stack);
     }
     console.error('---------------------------');
-    res.status(500).json({ message: 'Error communicating with AI service. Please check your API key and try again.' });
+    res.status(500).json({ message: errorMessage });
   }
 };

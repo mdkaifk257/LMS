@@ -22,6 +22,7 @@ export default function AIAssistant() {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [activeModel, setActiveModel] = useState('AI Assistant');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -49,6 +50,10 @@ export default function AIAssistant() {
 
     try {
       const response = await api.post('/ai/ask', { message: input });
+      
+      if (response.data.model) {
+        setActiveModel(response.data.model);
+      }
       
       const aiMsg: Message = {
         id: (Date.now() + 1).toString(),
@@ -94,7 +99,7 @@ export default function AIAssistant() {
         </div>
         <div className="flex items-center space-x-4">
             <div className="hidden md:block bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-xl text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-tighter border border-blue-100 dark:border-blue-900">
-                GPT-4o-Mini Active
+                {activeModel} Active
             </div>
             <button 
               onClick={() => setMessages([{ id: '1', role: 'ai', content: "Neural memory flushed. I'm ready for fresh inquiries.", timestamp: new Date() }])}
