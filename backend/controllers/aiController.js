@@ -47,14 +47,20 @@ exports.askAI = async (req, res) => {
     User Name: ${userName}
     ${progressContext}
     
-    About Kodnest: Kodnest is a premier technical training and placement institute based in Bangalore, India. They specialize in simplifying complex technical concepts for students and helping them get placed in top companies.
+    Background Knowledge:
+    - Kodnest: A premier technical training and placement institute based in Bangalore.
+    - QSpiders & JSpiders: Famous technical training institutes in India (often associated with Kodnest) that specialize in software testing (QSpiders) and Java development (JSpiders), helping thousands of students get IT jobs.
     
     Answer user questions about their studies, progress, and course content accurately and professionally based on the context provided above. 
-    If they ask about their progress, use the specific numbers provided. If they ask for study help, be encouraging and use their name.`;
+    If they ask about their progress, use the specific numbers provided. If they ask about Kodnest, QSpiders, or JSpiders, use the background knowledge to provide a helpful response. Be encouraging and use their name.`;
 
     // 2. Call AI Service
+    console.log(`AI Request for user ${userId} (${userName}):`, message);
+    console.log('Using System Prompt context:', progressRows.length, 'subjects found');
+
     if (apiKey.startsWith('hf_')) {
       // Use Hugging Face Inference Providers (OpenAI-compatible router)
+      console.log('Calling Hugging Face Router...');
       const response = await axios.post(
         'https://router.huggingface.co/v1/chat/completions',
         { 
@@ -69,9 +75,11 @@ exports.askAI = async (req, res) => {
       );
       
       const aiResponse = response.data.choices[0].message.content;
+      console.log('Hugging Face Response Success');
       return res.json({ response: aiResponse });
     } else {
       // Use OpenAI API
+      console.log('Calling OpenAI API (gpt-4o-mini)...');
       const openai = new OpenAI({ apiKey });
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini", // Upgraded from 3.5-turbo
@@ -82,16 +90,23 @@ exports.askAI = async (req, res) => {
         max_tokens: 500,
       });
 
+      console.log('OpenAI Response Success');
       return res.json({ response: completion.choices[0].message.content });
     }
   } catch (error) {
+    console.error('--- AI CONTROLLER ERROR ---');
     if (error.response) {
-      console.error('AI Service Error (Response):', error.response.status, error.response.data);
-    } else if (error.request) {
-      console.error('AI Service Error (Request):', error.request);
+      console.error('Status:', error.response.status);
+      console.error('Data:', JSON.stringify(error.response.data, null, 2));
+    } else if (error.status) {
+      // OpenAI SDK v4+ uses error.status
+      console.error('SDK Status:', error.status);
+      console.error('SDK Message:', error.message);
     } else {
-      console.error('AI Service Error (Message):', error.message);
+      console.error('Message:', error.message);
+      console.error('Stack:', error.stack);
     }
+    console.error('---------------------------');
     res.status(500).json({ message: 'Error communicating with AI service. Please check your API key and try again.' });
   }
 };
