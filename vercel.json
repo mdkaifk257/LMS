@@ -1,8 +1,9 @@
 {
-  "buildCommand": "npm run build --prefix frontend",
+  "buildCommand": "if [ -f package.json ] && grep -q '\"name\": \"frontend\"' package.json; then npm run build; else npm run build --prefix frontend; fi",
   "outputDirectory": "frontend/.next",
   "framework": "nextjs"
 }
+
 
 
 
