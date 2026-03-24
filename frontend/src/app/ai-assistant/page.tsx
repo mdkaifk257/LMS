@@ -94,7 +94,7 @@ export default function AIAssistant() {
         </div>
         <div className="flex items-center space-x-4">
             <div className="hidden md:block bg-blue-50 dark:bg-blue-900/20 px-4 py-2 rounded-xl text-blue-600 dark:text-blue-400 text-xs font-black uppercase tracking-tighter border border-blue-100 dark:border-blue-900">
-                GPT-3.5 Active
+                GPT-4o-Mini Active
             </div>
             <button 
               onClick={() => setMessages([{ id: '1', role: 'ai', content: "Neural memory flushed. I'm ready for fresh inquiries.", timestamp: new Date() }])}
